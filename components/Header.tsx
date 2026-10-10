@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import UserMenu from "@/components/UserMenu";
 import { GetCategories } from "@/handle/Category";
 import type { Category } from "@/data/categories";
 
@@ -13,7 +14,12 @@ const fallbackCategories: Category[] = [
   { id: "Comidas", name: "Comidas" },
 ];
 
-export default function Header() {
+type HeaderProp = {
+  categoryActive: boolean;
+  searchActive: boolean;
+};
+
+export default function Header({ categoryActive, searchActive }: HeaderProp) {
   const { count } = useCart();
   const { user } = useAuth();
   const pathname = usePathname();
@@ -46,21 +52,22 @@ export default function Header() {
           >
             PONTO DA FARRA
           </Link>
-
-          <form
-            role="search"
-            aria-label="Busca de produtos"
-            onSubmit={handleSearch}
-            className="min-w-0 flex-1"
-          >
-            <input
-              type="search"
-              name="q"
-              aria-label="Pesquise cervejas, vodka, resfrigerante"
-              placeholder="Pesquise cervejas, vodka, resfrigerante...."
-              className="w-full rounded-full border border-cardline bg-white px-4 py-2 text-xs text-black placeholder:text-muted sm:text-sm"
-            />
-          </form>
+          {searchActive ? (
+            <form
+              role="search"
+              aria-label="Busca de produtos"
+              onSubmit={handleSearch}
+              className="min-w-0 flex-1"
+            >
+              <input
+                type="search"
+                name="q"
+                aria-label="Pesquise cervejas, vodka, resfrigerante"
+                placeholder="Pesquise cervejas, vodka, resfrigerante...."
+                className="w-full rounded-full border border-cardline bg-white px-4 py-2 text-xs text-black placeholder:text-muted sm:text-sm"
+              />
+            </form>
+          ) : null}
 
           {!user ? (
             <Link
@@ -70,9 +77,7 @@ export default function Header() {
               Entrar
             </Link>
           ) : (
-            <div className="p-2 border-2 border-black-0 rounded-2xl">
-              <h1>{user?.name}</h1>
-            </div>
+            <UserMenu />
           )}
 
           <button
@@ -86,44 +91,46 @@ export default function Header() {
           </button>
         </div>
 
-        <nav aria-label="Categorias de produtos" className="mt-3">
-          <ul className="no-scrollbar flex items-center gap-4 overflow-x-auto sm:gap-6">
-            <li>
-              <Link
-                href="/#ofertas"
-                aria-current={currentPath === "/" ? "page" : undefined}
-                className={`block whitespace-nowrap border-b-2 pb-1 text-sm font-medium transition sm:text-base ${
-                  currentPath === "/"
-                    ? "border-gold text-black"
-                    : "border-transparent text-muted hover:text-black"
-                }`}
-              >
-                Oferta
-              </Link>
-            </li>
+        {categoryActive ? (
+          <nav aria-label="Categorias de produtos" className="mt-3">
+            <ul className="no-scrollbar flex items-center gap-4 overflow-x-auto sm:gap-6">
+              <li>
+                <Link
+                  href="/#ofertas"
+                  aria-current={currentPath === "/" ? "page" : undefined}
+                  className={`block whitespace-nowrap border-b-2 pb-1 text-sm font-medium transition sm:text-base ${
+                    currentPath === "/"
+                      ? "border-gold text-black"
+                      : "border-transparent text-muted hover:text-black"
+                  }`}
+                >
+                  Oferta
+                </Link>
+              </li>
 
-            {categories.slice(0, 4).map((category) => {
-              const href = `/categoria/${encodeURIComponent(category.name)}`;
-              const isActive = currentPath === `/categoria/${category.name}`;
+              {categories.slice(0, 4).map((category) => {
+                const href = `/categoria/${encodeURIComponent(category.name)}`;
+                const isActive = currentPath === `/categoria/${category.name}`;
 
-              return (
-                <li key={category.id ?? category.name}>
-                  <Link
-                    href={href}
-                    aria-current={isActive ? "page" : undefined}
-                    className={`block whitespace-nowrap border-b-2 pb-1 text-sm font-medium transition sm:text-base ${
-                      isActive
-                        ? "border-gold text-black"
-                        : "border-transparent text-muted hover:text-black"
-                    }`}
-                  >
-                    {category.name}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+                return (
+                  <li key={category.id ?? category.name}>
+                    <Link
+                      href={href}
+                      aria-current={isActive ? "page" : undefined}
+                      className={`block whitespace-nowrap border-b-2 pb-1 text-sm font-medium transition sm:text-base ${
+                        isActive
+                          ? "border-gold text-black"
+                          : "border-transparent text-muted hover:text-black"
+                      }`}
+                    >
+                      {category.name}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        ) : null}
       </div>
     </header>
   );

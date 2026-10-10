@@ -7,7 +7,7 @@ export default function ProdutosLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <CartProvider>
-      <Header />
+      <Header searchActive={true} categoryActive={true} />
       <main id="conteudo" className="flex-1">
         {children}
       </main>

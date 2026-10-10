@@ -13,7 +13,7 @@ export default function SiteLayout({
       >
         Pular para o conteúdo
       </a>
-      <Header />
+      <Header categoryActive={true} searchActive={true}/>
       <main id="conteudo" className="flex-1">
         {children}
       </main>
