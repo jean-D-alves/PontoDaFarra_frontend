@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Slidebar from "@/components/Slidebar";
 import { useAuth } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
@@ -9,18 +8,22 @@ import { CartProvider } from "@/context/CartContext";
 export default function AdminLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-
-  const isAdmin = user?.role === "Admin";
+  const { verifyAdmin } = useAuth();
+  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    if (loading) return;
-    if (!user) router.replace("/login");
-    else if (!isAdmin) router.replace("/");
-  }, [loading, user, isAdmin, router]);
+    let active = true;
 
-  if (loading || !isAdmin) return null;
+    verifyAdmin().then((isAdmin) => {
+      if (active) setAuthorized(isAdmin);
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [verifyAdmin]);
+
+  if (!authorized) return null;
 
   return (
     <CartProvider>

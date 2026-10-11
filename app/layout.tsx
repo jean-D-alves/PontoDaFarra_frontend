@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Inter } from "next/font/google";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 // @ts-ignore Next.js handles global CSS imports during compilation.
 import "./globals.css";
 
@@ -32,10 +32,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="pt-BR"
-      className={`${bebasNeue.variable} ${inter.variable}`}
-    >
+    <html lang="pt-BR" className={`${bebasNeue.variable} ${inter.variable}`}>
       <body className="flex min-h-screen flex-col bg-page font-sans text-black antialiased">
         <AuthProvider>{children}</AuthProvider>
       </body>

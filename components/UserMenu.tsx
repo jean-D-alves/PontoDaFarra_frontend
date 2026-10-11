@@ -6,13 +6,14 @@ import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
 export default function UserMenu() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, me } = useAuth();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isOpen) return;
+
 
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -32,6 +33,7 @@ export default function UserMenu() {
       document.removeEventListener("keydown", handleEscape);
     };
   }, [isOpen]);
+
 
   function handleSignOut() {
     signOut();
@@ -85,7 +87,7 @@ export default function UserMenu() {
               Pagina de admin
             </Link>
           ) : null}
-
+      
           <button
             type="button"
             role="menuitem"

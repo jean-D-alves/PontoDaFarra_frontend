@@ -9,6 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { GetMe, SignIn, SignUp, type AuthUser } from "@/handle/Login";
 
@@ -21,6 +22,7 @@ type AuthContextValue = {
   signUp: (name: string, email: string, senha: string) => Promise<void>;
   signOut: () => void;
   me: () => Promise<void>;
+  verifyAdmin: () => Promise<boolean>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -40,10 +42,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   const loadUser = useCallback(async (t: string) => {
     const u = await GetMe(t);
     if (!u?.id || !u.name || !u.email || !u.role) {
+      setUser(null);
       throw new Error("Invalid user response");
     }
     setUser(u);
@@ -83,9 +87,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const me = useCallback(async () => {
     const t = getToken();
-    if (!t) throw new Error("Token not found");
-    await loadUser(t);
-  }, [loadUser]);
+    if (!t) {
+      signOut();
+      return;
+    }
+    try {
+      await loadUser(t);
+    } catch {
+      signOut();
+    }
+  }, [loadUser, signOut]);
+
+  const verifyAdmin = useCallback(async () => {
+    const t = getToken();
+    if (!t) {
+      router.replace("/login");
+      return false;
+    }
+
+    try {
+      const u = await GetMe(t);
+      if (u.role !== "Admin") {
+        router.replace("/");
+        return false;
+      }
+      setUser(u);
+      return true;
+    } catch {
+      signOut();
+      router.replace("/login");
+      return false;
+    }
+  }, [router, signOut]);
 
   useEffect(() => {
     const stored = getToken();
@@ -109,8 +142,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signUp,
       signOut,
       me,
+      verifyAdmin,
     }),
-    [user, token, loading, signIn, signUp, signOut, me],
+    [user, token, loading, signIn, signUp, signOut, me, verifyAdmin],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

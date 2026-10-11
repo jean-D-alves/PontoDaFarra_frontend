@@ -3,9 +3,12 @@ import ComboBanner from "@/components/ComboBanner";
 import ProductGrid from "@/components/ProductGrid";
 import EventCTA from "@/components/EventCTA";
 import { GetProducts } from "@/handle/Product";
+import { useAuth } from "@/context/AuthContext";
 
 export default async function Home() {
   const products = await GetProducts();
+  
+
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 sm:py-8">
       <section
