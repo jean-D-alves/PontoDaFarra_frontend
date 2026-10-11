@@ -80,15 +80,15 @@ export default function Header({ categoryActive, searchActive }: HeaderProp) {
             <UserMenu />
           )}
 
-          <button
-            type="button"
+          <Link
+            href="/carrinho"
             aria-label={`Abrir carrinho com ${count} ${
               count === 1 ? "item" : "itens"
             }`}
             className="shrink-0 rounded-full bg-black px-3 py-2 text-xs font-semibold text-gold transition duration-200 hover:scale-105 hover:bg-neutral-900 sm:text-sm"
           >
             Carrinho({count})
-          </button>
+          </Link>
         </div>
 
         {categoryActive ? (

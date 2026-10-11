@@ -21,12 +21,6 @@ export default function Slidebar() {
       >
         Categorias
       </Link>
-      <Link
-        href="/login"
-        className="shrink-0 text-xs font-medium transition hover:text-gold sm:text-sm"
-      >
-        Dashboard
-      </Link>
     </div>
   );
 }

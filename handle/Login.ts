@@ -41,7 +41,6 @@ async function request<T>(path: string, options: RequestInit): Promise<T> {
         : "Erro ao conectar com a API";
     throw new Error(message);
   }
-  console.log(data);
 
   return data as T;
 }
