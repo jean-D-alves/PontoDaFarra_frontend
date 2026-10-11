@@ -16,7 +16,7 @@ export default function Slidebar() {
         Produtos
       </Link>
       <Link
-        href="/login"
+        href="/admin/categorias"
         className="shrink-0 text-xs font-medium transition hover:text-gold sm:text-sm"
       >
         Categorias
