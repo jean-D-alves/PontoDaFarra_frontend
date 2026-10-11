@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
@@ -22,7 +22,9 @@ type HeaderProp = {
 export default function Header({ categoryActive, searchActive }: HeaderProp) {
   const { count } = useCart();
   const { user } = useAuth();
+  const [search, setSearch] = useState<string>("");
   const pathname = usePathname();
+  const router = useRouter();
   const [categories, setCategories] = useState<Category[]>(fallbackCategories);
 
   useEffect(() => {
@@ -38,6 +40,8 @@ export default function Header({ categoryActive, searchActive }: HeaderProp) {
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const q = search.trim();
+    if (q) router.push(`/produtos/search?q=${encodeURIComponent(q)}`);
   };
 
   const currentPath = decodeURIComponent(pathname);
@@ -62,8 +66,10 @@ export default function Header({ categoryActive, searchActive }: HeaderProp) {
               <input
                 type="search"
                 name="q"
-                aria-label="Pesquise cervejas, vodka, resfrigerante"
-                placeholder="Pesquise cervejas, vodka, resfrigerante...."
+                aria-label="Pesquise cervejas, vodka, refrigerante"
+                placeholder="Pesquise cervejas, vodka, refrigerante..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 className="w-full rounded-full border border-cardline bg-white px-4 py-2 text-xs text-black placeholder:text-muted sm:text-sm"
               />
             </form>
@@ -93,7 +99,7 @@ export default function Header({ categoryActive, searchActive }: HeaderProp) {
 
         {categoryActive ? (
           <nav aria-label="Categorias de produtos" className="mt-3">
-            <ul className="no-scrollbar flex items-center gap-4 overflow-x-auto sm:gap-6">
+            <ul className="no-scrollbar flex items-center gap-4 overflow-x-auto sm :gap-6">
               <li>
                 <Link
                   href="/#ofertas"

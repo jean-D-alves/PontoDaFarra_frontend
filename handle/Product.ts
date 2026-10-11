@@ -102,3 +102,20 @@ export async function GetProduct(id: string): Promise<Product | null> {
     return null;
   }
 }
+
+
+export async function SearchProducts(name : string): Promise<Product[]> {
+  try {
+    const response = await fetch(`${API_URL}/product/search?q=${name}`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) return fallbackProducts;
+
+    const data: unknown = await response.json();
+
+    return Array.isArray(data) ? (data as Product[]) : fallbackProducts;
+  } catch {
+    return fallbackProducts;
+  }
+}
