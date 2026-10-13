@@ -15,21 +15,23 @@ function normalizeProduct(product: Product): Product {
   return { ...product, imageUrl: normalizeImageUrl(product.imageUrl) };
 }
 
+const normalizedFallbackProducts = fallbackProducts.map(normalizeProduct);
+
 export async function GetProducts(page: Number = 1): Promise<Product[]> {
   try {
     const response = await fetch(`${API_URL}/product?page=${page}`, {
       cache: "no-store",
     });
 
-    if (!response.ok) return fallbackProducts;
+    if (!response.ok) return normalizedFallbackProducts;
 
     const data: unknown = await response.json();
 
     return Array.isArray(data)
       ? (data as Product[]).map(normalizeProduct)
-      : fallbackProducts;
+      : normalizedFallbackProducts;
   } catch {
-    return fallbackProducts;
+    return normalizedFallbackProducts;
   }
 }
 
@@ -124,14 +126,14 @@ export async function SearchProducts(name : string): Promise<Product[]> {
       cache: "no-store",
     });
 
-    if (!response.ok) return fallbackProducts;
+    if (!response.ok) return normalizedFallbackProducts;
 
     const data: unknown = await response.json();
 
     return Array.isArray(data)
       ? (data as Product[]).map(normalizeProduct)
-      : fallbackProducts;
+      : normalizedFallbackProducts;
   } catch {
-    return fallbackProducts;
+    return normalizedFallbackProducts;
   }
 }
