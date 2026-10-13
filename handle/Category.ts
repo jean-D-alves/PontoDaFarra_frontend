@@ -1,5 +1,6 @@
 import type { Category, CategoryWithProducts } from "@/data/categories";
 import type { Product } from "@/data/products";
+import { normalizeProduct } from "./Product";
 import { type AuthUser } from "./Login";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5111/api";
@@ -81,7 +82,14 @@ export async function GetCategoriesWithProducts(): Promise<Category[]> {
 
     const data: unknown = await response.json();
 
-    return Array.isArray(data) ? (data as Category[]) : [];
+    if (!Array.isArray(data)) return [];
+
+    return (data as (Category & { products?: Product[] })[]).map(
+      (category) => ({
+        ...category,
+        products: (category.products ?? []).map(normalizeProduct),
+      }),
+    );
   } catch {
     return [];
   }
@@ -114,7 +122,11 @@ export async function GetCategory(
     const data: unknown = await response.json();
 
     if (Array.isArray(data)) {
-      return { id: name, name, products: data as Product[] };
+      return {
+        id: name,
+        name,
+        products: (data as Product[]).map(normalizeProduct),
+      };
     }
 
     if (data && typeof data === "object") {
@@ -124,7 +136,7 @@ export async function GetCategory(
         id: typeof record.id === "string" ? record.id : name,
         name: typeof record.name === "string" ? record.name : name,
         products: Array.isArray(record.products)
-          ? (record.products as Product[])
+          ? (record.products as Product[]).map(normalizeProduct)
           : [],
       };
     }

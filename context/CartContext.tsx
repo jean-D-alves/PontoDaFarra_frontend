@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { formatPrice, type Product } from "@/data/products";
+import { normalizeImageUrl } from "@/handle/Product";
 import CartToast from "@/components/CartToast";
 
 const WHATSAPP_FALLBACK_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
@@ -78,7 +79,7 @@ function readStoredItems(): CartItem[] {
           name: String(entry.name ?? ""),
           description: "",
           value: Number(entry.value) || 0,
-          imageUrl: String(entry.imagem ?? ""),
+          imageUrl: normalizeImageUrl(String(entry.imagem ?? "")),
           categoryName: "",
         },
         quantity: Math.max(1, Number(entry.quantity) || 1),

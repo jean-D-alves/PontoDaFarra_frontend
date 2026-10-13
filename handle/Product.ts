@@ -4,14 +4,14 @@ import { type AuthUser } from "./Login";
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5111/api";
 const API_ORIGIN = new URL(API_URL).origin;
 
-function normalizeImageUrl(imageUrl: string): string {
+export function normalizeImageUrl(imageUrl: string): string {
   if (!imageUrl) return "";
 
   const path = imageUrl.replace(/^https?:\/\/[^/]+/i, "");
   return `${API_ORIGIN}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-function normalizeProduct(product: Product): Product {
+export function normalizeProduct(product: Product): Product {
   return { ...product, imageUrl: normalizeImageUrl(product.imageUrl) };
 }
 
