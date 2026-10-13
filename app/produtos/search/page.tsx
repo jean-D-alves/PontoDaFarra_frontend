@@ -8,9 +8,9 @@ export default async function SearchPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
-  const products = await SearchProducts(q);
+  const products = await SearchProducts(q ?? "");
   return (
-    <main className="m-10 scroll-mt-28 sm:mt-14">
+    <main className="mx-auto w-full max-w-6xl scroll-mt-28 px-4 py-8 sm:px-6 sm:py-12">
       <ProductGrid products={products} />
     </main>
   );

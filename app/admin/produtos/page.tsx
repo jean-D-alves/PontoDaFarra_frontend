@@ -10,7 +10,7 @@ export default async function produtos() {
     <main
       id="ofertas"
       aria-labelledby="ofertas-title"
-      className="mt-10 scroll-mt-28 sm:mt-14"
+      className="scroll-mt-28 px-4 pb-28 pt-16 sm:px-6 md:pt-10"
     >
       <h2 className="text-center font-display text-3xl leading-none tracking-wide text-black sm:text-4xl md:text-5xl">
         Produtos

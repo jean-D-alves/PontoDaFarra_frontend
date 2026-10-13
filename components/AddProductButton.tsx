@@ -54,7 +54,7 @@ export default function AddProductButton() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-0 right-0 left-1/4 z-20 bg-gold-dark py-4 text-sm font-semibold text-black transition hover:bg-neutral-900 hover:text-gold sm:text-base"
+        className="fixed bottom-0 left-0 right-0 z-20 bg-gold-dark py-4 text-sm font-semibold text-black transition hover:bg-neutral-900 hover:text-gold sm:text-base md:left-1/4"
       >
         Adicione um produto
       </button>

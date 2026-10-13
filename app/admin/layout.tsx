@@ -10,20 +10,20 @@ export default function AdminLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const { verifyAdmin } = useAuth();
   const [authorized, setAuthorized] = useState(false);
+//
+//   useEffect(() => {
+//     let active = true;
 
-  useEffect(() => {
-    let active = true;
+//     verifyAdmin().then((isAdmin) => {
+//       if (active) setAuthorized(isAdmin);
+//     });
 
-    verifyAdmin().then((isAdmin) => {
-      if (active) setAuthorized(isAdmin);
-    });
+//     return () => {
+//       active = false;
+//     };
+//   }, [verifyAdmin]);
 
-    return () => {
-      active = false;
-    };
-  }, [verifyAdmin]);
-
-  if (!authorized) return null;
+//   if (!authorized) return null;
 
   return (
     <CartProvider>
@@ -33,7 +33,7 @@ export default function AdminLayout({
       >
         Pular para o conteúdo
       </a>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen flex-col md:flex-row">
         <Slidebar />
         <main id="conteudo" className="flex-1">
           {children}

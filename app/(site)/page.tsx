@@ -13,7 +13,7 @@ export default async function Home() {
     <div className="mx-auto w-full max-w-6xl px-4 py-5 sm:px-6 sm:py-8">
       <section
         aria-label="Promoções em destaque"
-        className="grid grid-cols-[3fr_2fr] gap-3 sm:gap-4 md:min-h-[300px]"
+        className="grid gap-3 sm:gap-4 md:min-h-[300px] md:grid-cols-[3fr_2fr]"
       >
         <HeroBanner />
         <ComboBanner />

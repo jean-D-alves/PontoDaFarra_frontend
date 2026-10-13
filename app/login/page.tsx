@@ -49,24 +49,29 @@ export default function Login() {
   }
 
   return (
-    <main className="flex flex-row w-full h-screen relative">
-      <header className="fixed z-20 p-5">
+    <main className="relative flex min-h-screen w-full flex-col md:flex-row">
+      <header className="fixed left-0 top-0 z-20 p-5">
         <Link
           href="/"
-          className="shrink-0 font-display text-lg leading-none tracking-wide transition hover:text-gold sm:text-2xl"
-          style={{ color: LoginScreen ? "#000" : "#fff" }}
+          className={`shrink-0 font-display text-lg leading-none tracking-wide transition hover:text-gold sm:text-2xl ${
+            LoginScreen ? "text-black" : "text-black md:text-white"
+          }`}
         >
           PONTO DA FARRA
         </Link>
       </header>
-      <div className="flex w-1/2 h-full items-center justify-center">
+      <div
+        className={`h-full w-full flex-1 items-center justify-center px-6 py-24 md:flex md:w-1/2 md:py-0 ${
+          LoginScreen ? "flex" : "hidden"
+        }`}
+      >
         <form
           onSubmit={handleSignIn}
-          className="flex flex-col max-w-2xl font-bold gap-4"
+          className="flex w-full max-w-sm flex-col gap-4 font-bold"
         >
           <label htmlFor="signin-email">Digite seu email</label>
           <input
-            className="w-72 h-12 rounded-xl"
+            className="h-12 w-full rounded-xl border border-cardline bg-white px-3"
             id="signin-email"
             type="email"
             placeholder="exemplo@exemplo.com"
@@ -76,7 +81,7 @@ export default function Login() {
           />
           <label htmlFor="signin-senha">Digite sua senha</label>
           <input
-            className="w-72 h-12 rounded-xl"
+            className="h-12 w-full rounded-xl border border-cardline bg-white px-3"
             id="signin-senha"
             type="password"
             placeholder="Senha"
@@ -100,15 +105,21 @@ export default function Login() {
           />
         </form>
       </div>
-      <div className={`absolute z-10 w-1/2 h-full bg-black ${ClassScreen}`} />
-      <div className="flex w-1/2 h-full items-center justify-center">
+      <div
+        className={`absolute z-10 hidden h-full w-1/2 bg-black md:block ${ClassScreen}`}
+      />
+      <div
+        className={`h-full w-full flex-1 items-center justify-center px-6 py-24 md:flex md:w-1/2 md:py-0 ${
+          LoginScreen ? "hidden" : "flex"
+        }`}
+      >
         <form
           onSubmit={handleSignUp}
-          className="flex flex-col max-w-2xl font-bold gap-4"
+          className="flex w-full max-w-sm flex-col gap-4 font-bold"
         >
           <label htmlFor="signup-name">Digite seu nome</label>
           <input
-            className="w-72 h-12 rounded-xl"
+            className="h-12 w-full rounded-xl border border-cardline bg-white px-3"
             id="signup-name"
             type="text"
             placeholder="Nome"
@@ -118,7 +129,7 @@ export default function Login() {
           />
           <label htmlFor="signup-email">Digite seu email</label>
           <input
-            className="w-72 h-12 rounded-xl"
+            className="h-12 w-full rounded-xl border border-cardline bg-white px-3"
             id="signup-email"
             type="email"
             placeholder="exemplo@exemplo.com"
@@ -128,7 +139,7 @@ export default function Login() {
           />
           <label htmlFor="signup-senha">Digite sua senha</label>
           <input
-            className="w-72 h-12 rounded-xl"
+            className="h-12 w-full rounded-xl border border-cardline bg-white px-3"
             id="signup-senha"
             type="password"
             placeholder="Senha"

@@ -7,7 +7,7 @@ export default async function Categorias() {
   const categorias = await GetCategories();
   
   return (
-    <main>
+    <main className="pb-28 pt-16 md:pt-8">
       <ul className="flex flex-col gap-5 p-4">
         {categorias.map((categoria) => (
           <li
