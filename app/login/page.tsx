@@ -61,7 +61,7 @@ export default function Login() {
         </Link>
       </header>
       <div
-        className={`h-full w-full flex-1 items-center justify-center px-6 py-24 md:flex md:w-1/2 md:py-0 ${
+        className={`min-h-screen w-full flex-1 items-center justify-center px-6 py-24 md:flex md:w-1/2 md:py-0 ${
           LoginScreen ? "flex" : "hidden"
         }`}
       >
@@ -106,10 +106,10 @@ export default function Login() {
         </form>
       </div>
       <div
-        className={`absolute z-10 hidden h-full w-1/2 bg-black md:block ${ClassScreen}`}
+        className={`absolute inset-y-0 left-0 z-10 hidden w-1/2 bg-black md:block ${ClassScreen}`}
       />
       <div
-        className={`h-full w-full flex-1 items-center justify-center px-6 py-24 md:flex md:w-1/2 md:py-0 ${
+        className={`min-h-screen w-full flex-1 items-center justify-center px-6 py-24 md:flex md:w-1/2 md:py-0 ${
           LoginScreen ? "hidden" : "flex"
         }`}
       >
