@@ -2,6 +2,18 @@ import { products as fallbackProducts, type Product } from "@/data/products";
 import { type AuthUser } from "./Login";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5111/api";
+const API_ORIGIN = new URL(API_URL).origin;
+
+function normalizeImageUrl(imageUrl: string): string {
+  if (!imageUrl) return "";
+
+  const path = imageUrl.replace(/^https?:\/\/[^/]+/i, "");
+  return `${API_ORIGIN}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+function normalizeProduct(product: Product): Product {
+  return { ...product, imageUrl: normalizeImageUrl(product.imageUrl) };
+}
 
 export async function GetProducts(page: Number = 1): Promise<Product[]> {
   try {
@@ -13,7 +25,9 @@ export async function GetProducts(page: Number = 1): Promise<Product[]> {
 
     const data: unknown = await response.json();
 
-    return Array.isArray(data) ? (data as Product[]) : fallbackProducts;
+    return Array.isArray(data)
+      ? (data as Product[]).map(normalizeProduct)
+      : fallbackProducts;
   } catch {
     return fallbackProducts;
   }
@@ -97,7 +111,7 @@ export async function GetProduct(id: string): Promise<Product | null> {
 
     if (!data || typeof data !== "object" || Array.isArray(data)) return null;
 
-    return data as Product;
+    return normalizeProduct(data as Product);
   } catch {
     return null;
   }
@@ -114,7 +128,9 @@ export async function SearchProducts(name : string): Promise<Product[]> {
 
     const data: unknown = await response.json();
 
-    return Array.isArray(data) ? (data as Product[]) : fallbackProducts;
+    return Array.isArray(data)
+      ? (data as Product[]).map(normalizeProduct)
+      : fallbackProducts;
   } catch {
     return fallbackProducts;
   }
