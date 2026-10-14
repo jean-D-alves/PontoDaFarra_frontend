@@ -10,20 +10,20 @@ export default function AdminLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const { verifyAdmin } = useAuth();
   const [authorized, setAuthorized] = useState(false);
-//
-//   useEffect(() => {
-//     let active = true;
 
-//     verifyAdmin().then((isAdmin) => {
-//       if (active) setAuthorized(isAdmin);
-//     });
+  useEffect(() => {
+    let active = true;
 
-//     return () => {
-//       active = false;
-//     };
-//   }, [verifyAdmin]);
+    verifyAdmin().then((isAdmin) => {
+      if (active) setAuthorized(isAdmin);
+    });
 
-//   if (!authorized) return null;
+    return () => {
+      active = false;
+    };
+  }, [verifyAdmin]);
+
+  if (!authorized) return null;
 
   return (
     <CartProvider>
